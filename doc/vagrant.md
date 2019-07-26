@@ -44,9 +44,9 @@ config.vm.network "public_network"
 ### 目录映射
 
 ```shell
-config.vm.synced_folder "../data", "/vagrant_data"
+config.vm.synced_folder "../data", "/vagrant_data"
 # nfs共享
-config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
+config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
 ```
 
 ### VM提供者配置
