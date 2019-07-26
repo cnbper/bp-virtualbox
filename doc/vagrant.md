@@ -71,9 +71,9 @@ end
 
 ### 其他配置
 
-配置 | 默认值 | 说明
-- | - | -
-config.vm.box_check_update | false | false: 不检查更新
+| 配置 | 默认值 | 说明 |
+| :-- | :--- | :--- |
+| config.vm.box_check_update | false | false: 不检查更新 |
 
 ## 日常操作
 
