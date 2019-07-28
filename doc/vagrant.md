@@ -5,7 +5,8 @@
 - centos-7 <http://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-1905_01.VirtualBox.box>
 
 ```shell
-vagrant box add CentOS-7-x86_64-Vagrant-1905_01.VirtualBox.box --name centos/7
+# vagrant box remove centos/7
+vagrant box add soft/CentOS-7-x86_64-Vagrant-1905_01.VirtualBox.box --name centos/7
 
 vagrant box list
 ```

@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
+  config.vm.provider 'virtualbox' do |vb|
+   vb.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
+  end  
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
+
+  $node_ip = "172.17.8.150"
+  $node_name = "cnbper-mysql"
+
+  config.vm.define $node_name do |node|
+    node.vm.box = "centos/7"
+    node.vm.hostname = $node_name
+    node.vm.network "private_network", ip: $node_ip
+    node.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = 1
+      vb.name = $node_name
+    end
+    node.vm.provision "shell", path: "install.sh", args: [1, $node_ip]
+  end
+end
