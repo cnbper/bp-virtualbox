@@ -8,6 +8,8 @@
 
 ## 安装包准备
 
+- 下载以下安装包并放到downloads文件夹
+
 ```shell
 wget http://nchc.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz
 wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24.tar.gz
