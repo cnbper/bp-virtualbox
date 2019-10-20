@@ -16,11 +16,23 @@ wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.24.tar.gz
 # wget https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.17.tar.gz
 ```
 
+## 启动
+
+```shell
+vagrant up
+
+# 停止
+vagrant halt
+```
+
 ## 重置root密码
 
 - root 用户登录到虚机
 
 ```shell
+vagrant ssh
+sudo -i
+
 # Login to MySQL，初始密码可在 temp/initdb.log 中找到
 /usr/local/mysql/bin/mysql -u root -p
 
