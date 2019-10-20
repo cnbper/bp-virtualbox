@@ -15,6 +15,10 @@ wget http://download.redis.io/releases/redis-4.0.14.tar.gz
 
 ## 安装注意事项
 
+```shell
+vagrant up
+```
+
 - **注意：安装完需重启虚机，使优化配置生效**
 
 ```shell
