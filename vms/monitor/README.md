@@ -23,13 +23,22 @@ https://grafana.com/grafana/dashboards/10262
 ## 启动
 
 ```shell
+mkdir -p temp/grafana/plugins
+mkdir -p temp/prometheus
+
 vagrant up
 
 # 停止
 vagrant halt
 ```
 
+## 测试
+
+- <http://172.17.8.153:9100/metrics>
+- <http://172.17.8.153:9090/graph>
+- <http://172.17.8.153:3000> admin/admin
+
 ## 初始化
 
-- 配置数据源
-- 配置dashboard
+- 配置 Prometheus 数据源 : <http://172.17.8.153:9090>
+- 配置 node dashboard : conf/grafana/dashboards

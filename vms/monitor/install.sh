@@ -11,7 +11,7 @@ yum -y install unzip
 
 mkdir -p /opt/monitor && cd /opt/monitor
 
-# http://172.17.8.153:9100/metrics
+#########################################################################################################
 tar zxf  /vagrant/downloads/node_exporter-0.18.1.linux-amd64.tar.gz
 mv node_exporter-0.18.1.linux-amd64 node_exporter
 
@@ -31,10 +31,10 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-
 systemctl enable node_exporter.service && systemctl start node_exporter.service
+# http://172.17.8.153:9100/metrics
 
-# http://172.17.8.153:9090/graph
+#########################################################################################################
 tar zxf /vagrant/downloads/prometheus-2.13.1.linux-amd64.tar.gz
 mv prometheus-2.13.1.linux-amd64 prometheus
 
@@ -55,10 +55,10 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-
 systemctl enable prometheus.service && systemctl start prometheus.service
+# http://172.17.8.153:9090/graph
 
-# http://172.17.8.153:3000 admin/admin
+#########################################################################################################
 tar zxf /vagrant/downloads/grafana-6.4.3.linux-amd64.tar.gz
 
 unzip /vagrant/downloads/grafana-piechart-panel.zip
@@ -83,5 +83,5 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-
 systemctl enable grafana-server.service && systemctl start grafana-server.service
+# http://172.17.8.153:3000 admin/admin
