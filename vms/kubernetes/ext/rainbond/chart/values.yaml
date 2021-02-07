@@ -1,0 +1,42 @@
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rainbondVersion: v5.2.0-release
+
+## Install Default RBAC roles and bindings
+rbac:
+  create: true
+  apiVersion: v1
+
+## Service account name and whether to create it
+serviceAccount:
+  create: true
+  name:
+
+enableEtcdOperator: false
+enableMySQLOperator: false
+
+# rainbondOperator
+rainbondOperator:
+  name: rainbond-operator
+  image:
+    repository: registry.cn-hangzhou.aliyuncs.com/goodrain/rainbond-operator
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+  regionDBName: region
+
+# openapi
+openapi:
+  name: openapi
+  image:
+    repository: registry.cn-hangzhou.aliyuncs.com/goodrain/rbd-op-ui
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+  port: 8080
+  nodePort: 30008
+  downloadURL: https://rainbond-pkg.oss-cn-shanghai.aliyuncs.com/offline/5.2/rainbond.images.2020-05-09-v5.2.0-release.tgz
+  downloadMD5: e8ad16355bc596a72913a0bcbf700949d7e30c6bc8d93ee7ef49378d19f9783b
+  installMode: WithPackage
+  imageRepository: registry.cn-hangzhou.aliyuncs.com/goodrain
+  onlyRegion: false

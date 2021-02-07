@@ -1,0 +1,141 @@
+---
+# Source: rainbond-operator/templates/service_account.yaml
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rainbond-operator
+  labels:
+    chart: "rainbond-operator-0.1.0"
+    name: rainbond-operator
+    heritage: Tiller
+    release: rainbond-operator
+---
+# Source: rainbond-operator/templates/cluster-role-binding.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: rainbond-operator
+  labels:
+    chart: "rainbond-operator-0.1.0"
+    name: rainbond-operator
+    heritage: Tiller
+    release: rainbond-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: rainbond-operator
+    namespace: rbd-system
+
+---
+# Source: rainbond-operator/templates/operator-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rainbond-operator
+  labels:
+    chart: "rainbond-operator-0.1.0"
+    name: rainbond-operator
+    heritage: Tiller
+    release: rainbond-operator
+spec:
+  ports:
+    - protocol: TCP
+      name: http
+      port: 8080
+      nodePort: 30008
+  selector:
+    name: rainbond-operator
+    release: rainbond-operator
+  type: NodePort
+---
+# Source: rainbond-operator/templates/operator-sts.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rainbond-operator
+  labels:
+    chart: "rainbond-operator-0.1.0"
+    name: rainbond-operator
+    heritage: Tiller
+    release: rainbond-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: rainbond-operator
+      release: rainbond-operator
+  serviceName: rainbond-operator
+  template:
+    metadata:
+      name: rainbond-operator
+      labels:
+        name: rainbond-operator
+        release: rainbond-operator
+    spec:
+      serviceAccountName: rainbond-operator
+      containers:
+        - name: operator
+          image: "registry.sloth.com/goodrain/rainbond-operator:v1.0.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --zap-level=4
+          env:
+            - name: RAINBOND_VERSION
+              value: v5.2.0-release
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SERVICE_ACCOUNT
+              value: rainbond-operator
+            - name: REGION_DB_NAME
+              value: "region"
+          volumeMounts:
+            - mountPath: /opt/rainbond/pkg
+              name: rbd-pkg
+            - mountPath: /var/run
+              name: dockersock
+        - name: openapi
+          image: "registry.sloth.com/goodrain/rbd-op-ui:v1.0.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --rainbond-version=v5.2.0-release
+            - --rbd-download-url=https://rainbond-pkg.oss-cn-shanghai.aliyuncs.com/offline/5.2/rainbond.images.2020-05-09-v5.2.0-release.tgz
+            - --rbd-download-md5=e8ad16355bc596a72913a0bcbf700949d7e30c6bc8d93ee7ef49378d19f9783b
+            - --image-repository=registry.cn-hangzhou.aliyuncs.com/goodrain
+            - --install-mode=WithPackage
+            - --only-region=false
+          env:
+          volumeMounts:
+            - mountPath: /opt/rainbond/pkg
+              name: rbd-pkg
+            - mountPath: /opt/rainbond/.init
+              name: rbd-init
+      volumes:
+        - name: rbd-pkg
+          hostPath:
+            path: /opt/rainbond/pkg
+            type: DirectoryOrCreate
+        - name: dockersock
+          hostPath:
+            path: /var/run
+            type: Directory
+        - name: rbd-init
+          hostPath:
+            path: /opt/rainbond/.init
+            type: DirectoryOrCreate
+

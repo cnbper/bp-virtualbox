@@ -36,9 +36,23 @@ vagrant halt
 
 - <http://172.17.8.153:9100/metrics>
 - <http://172.17.8.153:9090/graph>
-- <http://172.17.8.153:3000> admin/admin
+- <http://172.17.8.153: 3000> admin/admin
 
 ## 初始化
 
 - 配置 Prometheus 数据源 : <http://172.17.8.153:9090>
 - 配置 node dashboard : conf/grafana/dashboards
+
+## prometheus 常见操作
+
+```shell
+# 重新加载配置
+vi /vagrant/conf/prometheus/prometheus.yml
+
+# 第一种，向prometheus进行发信号
+kill -HUP pid
+
+# 第二种，向prometheus发送HTTP请求
+# /-/reload只接收POST请求，并且需要在启动prometheus进程时，指定 --web.enable-lifecycle
+curl -XPOST http://prometheus.chenlei.com/-/reload
+```

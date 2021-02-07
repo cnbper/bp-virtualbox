@@ -31,3 +31,11 @@ scrape_configs:
     file_sd_configs: 
       - files: ['/vagrant/conf/prometheus/nodes_sd_configs/*.yml']
         refresh_interval: 5s 
+  - job_name: 'service'
+    file_sd_configs: 
+      - files: ['/vagrant/conf/prometheus/service_sd_configs/*.yml']
+        refresh_interval: 5s 
+  - job_name: 'gts'
+
+    static_configs:
+    - targets: ['192.168.0.101:19089']

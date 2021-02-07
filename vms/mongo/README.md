@@ -13,7 +13,7 @@ vagrant up
 vagrant halt
 ```
 
-## 初始化用户信息
+## 用户秘密认证
 
 ```shell
 vagrant ssh
